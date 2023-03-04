@@ -1,11 +1,15 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import { errorHandler } from "./handlers/errorHandler";
 import { routes } from "./routes";
 
 const server = express();
 
+server.use(morgan('dev'));
+server.use(helmet());
 server.use(cors());
 server.use(express.json());
 server.use(errorHandler);
