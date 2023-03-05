@@ -12,20 +12,15 @@ export type AuthenticateUserUseCaseParams = {
 
 class AuthenticateUserUseCase {
   async execute({ email, password }: AuthenticateUserUseCaseParams) {
-    const validationResult = AuthSchema.validate(
-      {
+    try {
+      AuthSchema.parse({
         email,
         password,
-      },
-      {
-        abortEarly: false,
-      }
-    );
-
-    if (validationResult.error) {
+      });
+    } catch (err: any) {
       throw new ValidationException({
         message: "Failed to authenticate",
-        errors: [validationResult.error.message],
+        errors: err,
       });
     }
 

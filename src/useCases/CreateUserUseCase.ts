@@ -1,26 +1,21 @@
 import { hash } from "bcrypt";
 import { ValidationException } from "../models/exceptions/ValidationException";
-import { CreateUserModel, UserSchema } from "../models/User";
+import { CreateUserModel, CreateUserSchema } from "../models/User";
 import { prismaClient } from "../prisma/prismaClient";
 
 class CreateUserUseCase {
   async execute({ name, email, password, avatar_url }: CreateUserModel) {
-    const validationResult = UserSchema.validate(
-      {
+    try {
+      CreateUserSchema.parse({
         name,
         email,
         password,
         avatar_url,
-      },
-      {
-        abortEarly: false,
-      }
-    );
-
-    if (validationResult.error) {
+      });
+    } catch (err) {
       throw new ValidationException({
         message: "Failed to create user",
-        errors: [validationResult.error.message],
+        errors: err,
       });
     }
 

@@ -1,41 +1,29 @@
-import Joi from "joi";
+import { z } from "zod";
 
-export type UserModel = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  avatar_url?: string;
-};
-
-export const UserSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string()
-    .required()
-    .email()
-    .message("Email must be an valid email"),
-  password: Joi.string().required(),
-  avatar_url: Joi.string()
-    .uri()
-    .message("Avatar URL must be a valid URL")
-    .optional(),
+export const UserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  avatar_url: z.string().url().optional(),
 });
 
-export const AuthSchema = Joi.object({
-  email: Joi.string()
-    .required()
-    .email()
-    .message("Email must be an valid email"),
-  password: Joi.string().required(),
+export type UserModel = z.infer<typeof UserSchema>;
+
+export const CreateUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  avatar_url: z.string().url().optional(),
 });
 
-export const AuthRefreshTokenSchema = Joi.object({
-  refresh_token: Joi.string().required(),
+export type CreateUserModel = z.infer<typeof CreateUserSchema>;
+
+export const AuthSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
 });
 
-export type CreateUserModel = {
-  name: string;
-  email: string;
-  password: string;
-  avatar_url?: string;
-};
+export const AuthRefreshTokenSchema = z.object({
+  refresh_token: z.string(),
+});

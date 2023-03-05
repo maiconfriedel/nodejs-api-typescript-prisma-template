@@ -7,19 +7,14 @@ import { prismaClient } from "../prisma/prismaClient";
 
 class AuthenticateUserWithRefreshTokenUseCase {
   async execute(refreshToken: string) {
-    const validationResult = AuthRefreshTokenSchema.validate(
-      {
+    try {
+      AuthRefreshTokenSchema.parse({
         refresh_token: refreshToken,
-      },
-      {
-        abortEarly: false,
-      }
-    );
-
-    if (validationResult.error) {
+      });
+    } catch (err) {
       throw new ValidationException({
         message: "Failed authenticating with refresh token",
-        errors: [validationResult.error.message],
+        errors: err,
       });
     }
 

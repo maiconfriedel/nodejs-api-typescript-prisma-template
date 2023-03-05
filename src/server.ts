@@ -8,7 +8,7 @@ import { routes } from "./routes";
 
 const server = express();
 
-server.use(morgan('dev'));
+server.use(morgan("dev"));
 server.use(helmet());
 server.use(cors());
 server.use(express.json());

@@ -1,12 +1,12 @@
 type ValidationExceptionArgs = {
   message: string;
-  errors: string[];
+  errors: any;
 };
 
 class ValidationException {
   public message: string;
 
-  public errors: string[];
+  public errors: any;
 
   constructor({ message, errors }: ValidationExceptionArgs) {
     this.message = message;
